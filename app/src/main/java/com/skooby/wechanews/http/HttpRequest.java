@@ -18,21 +18,27 @@ import java.util.Map;
 public class HttpRequest {
 
     public static final String APPKEY = "f509ab81014550537321ba98fee578e1";
-    public  static final String url ="http://v.juhe.cn/weixin/query"; //请求接口地址
+    public static final int DEF_CONN_TIMEOUT = 30000;
+    public static final int DEF_READ_TIMEOUT = 30000;
+    public  static final String strUrl ="http://v.juhe.cn/weixin/query"; //请求接口地址
+
 
     public static String get(String pno) throws IOException{
         Map params = new HashMap();//请求参数
         params.put("pno",pno); //当前页数，默认1
-        params.put("ps",""); //每页返回条数，最大100，默认20
+        params.put("ps",20); //每页返回条数，最大100，默认20
         params.put("dtype","");//返回数据的格式,xml或json，默认json
         params.put("key",APPKEY);//应用APPKEY(应用详细页查询)
 
         HttpURLConnection con = null;
         try {
-            URL url = new URL(urlencode(params));
+            URL url = new URL(strUrl+"?"+"pno=1&ps=20&dtype=json&key=f509ab81014550537321ba98fee578e1");
             con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
-            con.setRequestProperty("User-Agent", "Mozilla/5.0");
+//            con.setRequestProperty("User-Agent", "Mozilla/5.0");
+//            con.setUseCaches(false);
+            con.setConnectTimeout(DEF_CONN_TIMEOUT);
+            con.setReadTimeout(DEF_READ_TIMEOUT);
 
             BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
             String inputLine;
@@ -42,7 +48,7 @@ public class HttpRequest {
                 response.append(inputLine);
             }
             in.close();
-            Log.d("HttpRequest","get pass");
+            Log.d("HttpRequest","HttpRequest.get pass");
             return response.toString();
 
         }

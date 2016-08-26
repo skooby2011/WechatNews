@@ -39,6 +39,7 @@ public class LoadNewsTask extends AsyncTask<Void, Void, List<News>> {
             newsList = JsonHelper.parseJsonToList(HttpRequest.get("1"));
             Log.d("LoadNewsTask", "JasonHelper.parseJsonToList pass");
         } catch (IOException | JSONException e) {
+            Log.d("LoadNewsTask",e.toString());
             Log.d("LoadNewsTask", "JasonHelper.parseJsonToList fail");
 
         } finally {
